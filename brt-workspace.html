@@ -136,16 +136,16 @@
             // Total Biaya Proyek Keseluruhan (Capex + Opex)
             const totalCost = konstruksi + lahan + totalOpex;
             
-            // Perhitungan Nilai CBR
-            const cbr = manfaat / totalCost;
+            // Perhitungan Nilai BCR
+            const cbr = totalCost / manfaat;
 
             // Simpan secara realtime di LocalStorage browser agar terbaca di index.html
-            localStorage.setItem('cbr_brt', cbr);
+            localStorage.setItem('bcr_brt', bcr);
 
             // Tampilkan Output Ke Mahasiswa
             document.getElementById('res-cost').innerText = "Rp " + totalCost.toLocaleString('id-ID');
             document.getElementById('res-pct').innerText = rasioBiayaLangsung.toFixed(1) + "%";
-            document.getElementById('res-cbr').innerText = cbr.toFixed(4);
+            document.getElementById('res-bcr').innerText = bcr.toFixed(4);
             document.getElementById('hasil-box').classList.remove('hidden');
         }
     </script>
