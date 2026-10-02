@@ -10,7 +10,7 @@
     <div class="max-w-6xl mx-auto">
         <header class="text-center mb-10">
             <h1 class="text-4xl font-extrabold text-amber-400 mb-2">🏙️ DASHBOARD LELANG PROYEK MEGAPOLITAN</h1>
-            <p class="text-gray-400 text-lg">Penentuan Pemenang Proyek Transportasi Massal Berdasarkan Cost-Benefit Ratio (CBR)</p>
+            <p class="text-gray-400 text-lg">Penentuan Pemenang Proyek Transportasi Massal Berdasarkan Cost-Benefit Ratio (BCR)</p>
         </header>
 
         <!-- Papan Skor Utama -->
@@ -24,8 +24,8 @@
                 <div class="space-y-3">
                     <p class="text-gray-400">Target Kapasitas: <span class="text-white font-bold">50.000 pphpd</span></p>
                     <div class="bg-gray-700 p-4 rounded-lg text-center">
-                        <p class="text-sm text-gray-400">Skor Akhir CBR</p>
-                        <p id="cbr-mrt-display" class="text-4xl font-black text-white mt-1">-</p>
+                        <p class="text-sm text-gray-400">Skor Akhir BCR</p>
+                        <p id="bcr-mrt-display" class="text-4xl font-black text-white mt-1">-</p>
                     </div>
                     <a href="mrt-workspace.html" target="_blank" class="block text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition">
                         Buka Lembar Kerja MRT ↗
@@ -42,8 +42,8 @@
                 <div class="space-y-3">
                     <p class="text-gray-400">Target Kapasitas: <span class="text-white font-bold">50.000 pphpd (Hybrid/ART)</span></p>
                     <div class="bg-gray-700 p-4 rounded-lg text-center">
-                        <p class="text-sm text-gray-400">Skor Akhir CBR</p>
-                        <p id="cbr-brt-display" class="text-4xl font-black text-white mt-1">-</p>
+                        <p class="text-sm text-gray-400">Skor Akhir BCR</p>
+                        <p id="bcr-brt-display" class="text-4xl font-black text-white mt-1">-</p>
                     </div>
                     <a href="brt-workspace.html" target="_blank" class="block text-center bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-lg transition">
                         Buka Lembar Kerja BRT ↗
@@ -64,24 +64,24 @@
     <script>
         function hitungPemenang() {
             // Mengambil data terupdate yang disimpan mahasiswa di LocalStorage
-            const cbrMrt = parseFloat(localStorage.getItem('cbr_mrt')) || 0;
-            const cbrBrt = parseFloat(localStorage.getItem('cbr_brt')) || 0;
+            const bcrMrt = parseFloat(localStorage.getItem('bcr_mrt')) || 0;
+            const bcrBrt = parseFloat(localStorage.getItem('bcr_brt')) || 0;
 
-            document.getElementById('cbr-mrt-display').innerText = cbrMrt ? cbrMrt.toFixed(2) : '-';
-            document.getElementById('cbr-brt-display').innerText = cbrBrt ? cbrBrt.toFixed(2) : '-';
+            document.getElementById('bcr-mrt-display').innerText = bcrMrt ? bcrMrt.toFixed(2) : '-';
+            document.getElementById('bcr-brt-display').innerText = bcrBrt ? bcrBrt.toFixed(2) : '-';
 
             const hasilDiv = document.getElementById('hasil-lelang');
             hasilDiv.classList.remove('hidden');
 
-            if (cbrMrt === 0 && cbrBrt === 0) {
+            if (bcrMrt === 0 && bcrBrt === 0) {
                 hasilDiv.innerHTML = "❌ Kedua tim belum melakukan submit kalkulasi di lembar kerja masing-masing.";
                 return;
             }
 
             let pemenang = "";
-            if (cbrMrt > cbrBrt) {
+            if (bcrMrt > bcrBrt) {
                 pemenang = "🏆 PEMENANG LELANG: TIM MRT (Rail-Based)! Proyek bernilai investasi tinggi ini dinilai memberikan efisiensi manfaat jangka panjang yang lebih optimal.";
-            } else if (cbrBrt > cbrMrt) {
+            } else if (bcrBrt > bcrMrt) {
                 pemenang = "🏆 PEMENANG LELANG: TIM BRT (Road-Based)! Dengan efisiensi biaya konstruksi, rasio kembalian manfaat proyek ini jauh lebih tinggi.";
             } else {
                 pemenang = "🤝 HASIL SEIMBANG! Kedua tim memiliki rasio biaya dan manfaat yang sama kuat. Keputusan diserahkan ke hak prerogatif Walikota.";
@@ -91,10 +91,10 @@
         
         // Cek data saat halaman dimuat
         window.onload = function() {
-            const cbrMrt = parseFloat(localStorage.getItem('cbr_mrt')) || 0;
-            const cbrBrt = parseFloat(localStorage.getItem('cbr_brt')) || 0;
-            if(cbrMrt) document.getElementById('cbr-mrt-display').innerText = cbrMrt.toFixed(2);
-            if(cbrBrt) document.getElementById('cbr-brt-display').innerText = cbrBrt.toFixed(2);
+            const bcrMrt = parseFloat(localStorage.getItem('bcr_mrt')) || 0;
+            const bcrBrt = parseFloat(localStorage.getItem('bcr_brt')) || 0;
+            if(bcrMrt) document.getElementById('bcr-mrt-display').innerText = bcrMrt.toFixed(2);
+            if(bcrBrt) document.getElementById('bcr-brt-display').innerText = bcrBrt.toFixed(2);
         }
     </script>
 </body>
