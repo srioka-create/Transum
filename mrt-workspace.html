@@ -13,17 +13,17 @@
             <a href="index.html" class="text-sm bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg">⬅ Kembali ke Papan Utama</a>
         </div>
 
-        <form id="mrtForm" class="space-y-6" onsubmit="kalkulasiCBR(event)">
+        <form id="mrtForm" class="space-y-6" onsubmit="kalkulasiBCR(event)">
             <!-- BLOK BIAYA INVESTASI -->
             <div class="bg-slate-850 p-4 rounded-xl border border-slate-700">
                 <h3 class="text-lg font-bold text-amber-400 mb-3">1. Biaya Investasi Awal (Capital Expenditure)</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm text-slate-300 mb-1">Biaya Konstruksi (Rupiah)</label>
+                        <label class="block text-sm text-slate-300 mb-1">Biaya Konstruksi (Rp 10.0000.000.000/km at grade; Rp 247.000.000.000/km elevated)</label>
                         <input type="number" id="konstruksi" required class="w-full bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm text-slate-300 mb-1">Biaya Pengadaan Lahan (Rupiah)</label>
+                        <label class="block text-sm text-slate-300 mb-1">Biaya Pengadaan Lahan (Rp 0 karena underground)</label>
                         <input type="number" id="lahan" required class="w-full bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
                     </div>
                 </div>
@@ -37,27 +37,27 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm text-slate-300 mb-1">Biaya Langsung (Gaji, Listrik/BBM, dll)</label>
+                        <label class="block text-sm text-slate-300 mb-1">Biaya Langsung (Gaji, Listrik/BBM, dll: Rp 14.000/km)</label>
                         <input type="number" id="b_langsung" required class="w-full bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm text-slate-300 mb-1">Biaya Perawatan (Maintenance)</label>
+                        <label class="block text-sm text-slate-300 mb-1">Biaya Perawatan (Maintenance:Rp 4.100/km)</label>
                         <input type="number" id="b_rawat" required class="w-full bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm text-slate-300 mb-1">Biaya Administrasi</label>
+                        <label class="block text-sm text-slate-300 mb-1">Biaya Administrasi (Rp 1.500/km) </label>
                         <input type="number" id="b_admin" required class="w-full bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm text-slate-300 mb-1">Biaya Marketing & Iklan</label>
+                        <label class="block text-sm text-slate-300 mb-1">Biaya Marketing & Iklan (Rp 0 )</label>
                         <input type="number" id="b_marketing" required class="w-full bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm text-slate-300 mb-1">Pajak</label>
+                        <label class="block text-sm text-slate-300 mb-1">Pajak(Rp 31,8/km)</label>
                         <input type="number" id="b_pajak" required class="w-full bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm text-slate-300 mb-1">Asuransi</label>
+                        <label class="block text-sm text-slate-300 mb-1">Asuransi(Rp 410/km)</label>
                         <input type="number" id="b_asuransi" required class="w-full bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
                     </div>
                 </div>
@@ -74,13 +74,13 @@
                         <input type="number" id="manfaat" placeholder="Ekivalen Penghematan Waktu, Pengurangan Emisi, Tiket" required class="w-full bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
                     </div>
                     <div class="flex items-end">
-                        <p class="text-xs text-slate-400">Petunjuk: Konversikan keuntungan sosial (kemacetan berkurang) dan ekonomi menjadi nilai mata uang.</p>
+                        <p class="text-xs text-slate-400">Petunjuk: Konversikan keuntungan sosial (Rp 19.000 per jam / orang), pendapatan fare-box (Rp 10.000/penumpang), dan lingkungan (Rp 2.000/km) menjadi nilai mata uang.</p>
                     </div>
                 </div>
             </div>
 
             <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition shadow-lg">
-                🚀 Kirim Analisis & Hitung Skor CBR
+                🚀 Kirim Analisis & Hitung Skor BCR
             </button>
         </form>
 
@@ -91,15 +91,15 @@
                 <p>Total Cost: <span id="res-cost" class="font-bold text-white"></span></p>
                 <p>Persentase Biaya Langsung: <span id="res-pct" class="font-bold"></span></p>
                 <div class="col-span-2 bg-slate-800 p-4 rounded-lg mt-2 text-center">
-                    <p class="text-gray-400 text-xs">Cost-Benefit Ratio (CBR)</p>
-                    <p id="res-cbr" class="text-3xl font-black text-blue-400 mt-1"></p>
+                    <p class="text-gray-400 text-xs">Benefit-Cost Ratio (BCR)</p>
+                    <p id="res-bcr" class="text-3xl font-black text-blue-400 mt-1"></p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        function kalkulasiCBR(e) {
+        function kalkulasiBCR(e) {
             e.preventDefault();
             
             // Mengambil Nilai Cost
