@@ -129,3 +129,59 @@
             const targetCap = parseInt(document.getElementById('targetCap').value) || 0;
 
             // Konstanta Simulasi Perbandingan (Asumsi Rekayasa Transportasi makro)
+// Rail: CAPEX 400 Milyar/km, OPEX tinggi dasar tapi efisien per pax, Maint tinggi infrastruktur fisik kereta
+const railMax = 50000;
+const railCapexTotal = distance * 0.45; // Triliun IDR
+const railOpexTotal = distance * 0.015 + (targetCap * 0.0000005);
+const railMaintTotal = distance * 0.008;
+const railMktTotal = 0.005; // Lebih kecil karena "Gengsi" tinggi, butuh sedikit edukasi
+// Road: CAPEX 50 Milyar/km (Jalur khusus/BRT), OPEX armada bus banyak, Maint jalan aspal/armada sedang
+const roadMax = 25000;
+const roadCapexTotal = distance * 0.06; // Triliun IDR
+const roadOpexTotal = distance * 0.008 + (targetCap * 0.000002); // Membengkak jika volume penumpang padat
+const roadMaintTotal = distance * 0.004;
+const roadMktTotal = 0.015; // Lebih besar untuk meyakinkan orang naik bus
+// Tampilkan Data Ke UI
+document.getElementById('railCapex').innerText = formatTriliun(railCapexTotal);
+document.getElementById('railOpex').innerText = formatTriliun(railOpexTotal);
+document.getElementById('railMaint').innerText = formatTriliun(railMaintTotal);
+document.getElementById('railMkt').innerText = formatTriliun(railMktTotal);
+document.getElementById('railMaxCap').innerText = railMax.toLocaleString('id-ID') + " pax/jam";
+document.getElementById('roadCapex').innerText = formatTriliun(roadCapexTotal);
+document.getElementById('roadOpex').innerText = formatTriliun(roadOpexTotal);
+document.getElementById('roadMaint').innerText = formatTriliun(roadMaintTotal);
+document.getElementById('roadMkt').innerText = formatTriliun(roadMktTotal);
+document.getElementById('roadMaxCap').innerText = roadMax.toLocaleString('id-ID') + " pax/jam";
+// Validasi Kapasitas Kontra Target Skenario
+const railStatus = document.getElementById('railStatus');
+if(targetCap > railMax) {
+railStatus.innerText = "Kapasitas Jebol";
+railStatus.className = "px-2 py-1 text-xs font-bold rounded bg-red-100 text-red-800";
+} else {
+railStatus.innerText = "Mampu";
+railStatus.className = "px-2 py-1 text-xs font-bold rounded bg-green-100 text-green-800";
+}
+const roadStatus = document.getElementById('roadStatus');
+if(targetCap > roadMax) {
+roadStatus.innerText = "Macet Parah / Overload";
+roadStatus.className = "px-2 py-1 text-xs font-bold rounded bg-red-100 text-red-800";
+} else {
+roadStatus.innerText = "Mampu";
+roadStatus.className = "px-2 py-1 text-xs font-bold rounded bg-green-100 text-green-800";
+}
+}
+function sumScores() {
+const rFin = parseInt(document.getElementById('scoreRailFin').value) || 0;
+const rOps = parseInt(document.getElementById('scoreRailOps').value) || 0;
+const rMkt = parseInt(document.getElementById('scoreRailMkt').value) || 0;
+document.getElementById('totalRailScore').innerText = rFin + rOps + rMkt;
+const bdFin = parseInt(document.getElementById('scoreRoadFin').value) || 0;
+const bdOps = parseInt(document.getElementById('scoreRoadOps').value) || 0;
+const bdMkt = parseInt(document.getElementById('scoreRoadMkt').value) || 0;
+document.getElementById('totalRoadScore').innerText = bdFin + bdOps + bdMkt;
+}
+// Inisialisasi awal saat halaman dibuka
+window.onload = function() {
+calculateTransit();
+sumScores();
+};
