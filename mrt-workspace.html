@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lembar Kerja Konsultan - Tim MRT</title>
+    <script src="https://tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 p-6">
+    <div class="max-w-4xl mx-auto bg-slate-800 p-8 rounded-2xl shadow-2xl border border-blue-500/30">
+        <div class="flex justify-between items-center mb-6 border-b border-slate-700 pb-4">
+            <h1 class="text-3xl font-extrabold text-blue-400">🚄 Lembar Kerja Analisis - TIM MRT</h1>
+            <a href="index.html" class="text-sm bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg">⬅ Kembali ke Papan Utama</a>
+        </div>
+
+        <form id="mrtForm" class="space-y-6" onsubmit="kalkulasiCBR(event)">
+            <!-- BLOK BIAYA INVESTASI -->
+            <div class="bg-slate-850 p-4 rounded-xl border border-slate-700">
+                <h3 class="text-lg font-bold text-amber-400 mb-3">1. Biaya Investasi Awal (Capital Expenditure)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-slate-300 mb-1">Biaya Konstruksi (Rupiah)</label>
+                        <input type="number" id="konstruksi" required class="w-full bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-slate-300 mb-1">Biaya Pengadaan Lahan (Rupiah)</label>
+                        <input type="number" id="lahan" required class="w-full bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOK BIAYA OPERASIONAL -->
+            <div class="bg-slate-850 p-4 rounded-xl border border-slate-700">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-lg font-bold text-amber-400">2. Biaya Operasional Tahunan (Operational Expenditure)</h3>
+                    <span class="text-xs text-blue-300 italic">Aturan: Biaya Langsung harus berada di kisaran 45% - 60% dari Total Opex</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-slate-300 mb-1">Biaya Langsung (Gaji, Listrik/BBM, dll)</label>
+                        <input type="number" id="b_langsung" required class="w-full bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-slate-300 mb-1">Biaya Perawatan (Maintenance)</label>
+                        <input type="number" id="b_rawat" required class="w-full bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-slate-300 mb-1">Biaya Administrasi</label>
+                        <input type="number" id="b_admin" required class="w-full bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-slate-300 mb-1">Biaya Marketing & Iklan</label>
+                        <input type="number" id="b_marketing" required class="w-full bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-slate-300 mb-1">Pajak</label>
+                        <input type="number" id="b_pajak" required class="w-full bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-slate-300 mb-1">Asuransi</label>
+                        <input type="number" id="b_asuransi" required class="w-full bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
+                    </div>
+                </div>
+                <!-- Indikator Validasi Live -->
+                <div id="validasi-opex" class="mt-3 text-sm font-semibold text-right hidden"></div>
+            </div>
+
+            <!-- BLOK MANFAAT -->
+            <div class="bg-slate-850 p-4 rounded-xl border border-slate-700">
+                <h3 class="text-lg font-bold text-amber-400 mb-3">3. Proyeksi Manfaat Tahunan (Benefits)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-slate-300 mb-1">Total Manfaat (Rupiah/Tahun)</label>
+                        <input type="number" id="manfaat" placeholder="Ekivalen Penghematan Waktu, Pengurangan Emisi, Tiket" required class="w-full bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div class="flex items-end">
+                        <p class="text-xs text-slate-400">Petunjuk: Konversikan keuntungan sosial (kemacetan berkurang) dan ekonomi menjadi nilai mata uang.</p>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition shadow-lg">
+                🚀 Kirim Analisis & Hitung Skor CBR
+            </button>
+        </form>
+
+        <!-- Hasil Kalkulasi -->
+        <div id="hasil-box" class="mt-6 bg-slate-900 p-6 rounded-xl border border-slate-700 hidden">
+            <h4 class="text-xl font-bold text-white mb-2">📊 Hasil Output Simulasi MRT</h4>
+            <div class="grid grid-cols-2 gap-4 text-sm text-slate-300">
+                <p>Total Cost: <span id="res-cost" class="font-bold text-white"></span></p>
+                <p>Persentase Biaya Langsung: <span id="res-pct" class="font-bold"></span></p>
+                <div class="col-span-2 bg-slate-800 p-4 rounded-lg mt-2 text-center">
+                    <p class="text-gray-400 text-xs">Cost-Benefit Ratio (CBR)</p>
+                    <p id="res-cbr" class="text-3xl font-black text-blue-400 mt-1"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function kalkulasiCBR(e) {
+            e.preventDefault();
+            
+            // Mengambil Nilai Cost
+            const konstruksi = parseFloat(document.getElementById('konstruksi').value);
+            const lahan = parseFloat(document.getElementById('lahan').value);
+            
+            const b_langsung = parseFloat(document.getElementById('b_langsung').value);
+            const b_rawat = parseFloat(document.getElementById('b_rawat').value);
+            const b_admin = parseFloat(document.getElementById('b_admin').value);
+            const b_marketing = parseFloat(document.getElementById('b_marketing').value);
+            const b_pajak = parseFloat(document.getElementById('b_pajak').value);
+            const b_asuransi = parseFloat(document.getElementById('b_asuransi').value);
+            
+            const manfaat = parseFloat(document.getElementById('manfaat').value);
+
+            // Perhitungan Biaya Operasional Total
+            const totalOpex = b_langsung + b_rawat + b_admin + b_marketing + b_pajak + b_asuransi;
+            const rasioBiayaLangsung = (b_langsung / totalOpex) * 100;
+
+            const validasiBox = document.getElementById('validasi-opex');
+            validasiBox.classList.remove('hidden');
+
+            // Validasi Aturan Batas 45% - 60%
+            if (rasioBiayaLangsung < 45 || rasioBiayaLangsung > 60) {
+                validasiBox.className = "mt-3 text-sm font-semibold text-right text-rose-400";
+                validasiBox.innerText = `⚠️ Gagal: Biaya langsung Anda ${rasioBiayaLangsung.toFixed(1)}%. Harus berada di rentang 45% - 60% dari total operasional!`;
+                document.getElementById('hasil-box').classList.add('hidden');
+                return;
+            } else {
+                validasiBox.className = "mt-3 text-sm font-semibold text-right text-emerald-400";
+                validasiBox.innerText = `✅ Valid: Rasio Biaya Langsung aman (${rasioBiayaLangsung.toFixed(1)}%)`;
+            }
+
+            // Total Biaya Proyek Keseluruhan (Capex + Opex)
+            const totalCost = konstruksi + lahan + totalOpex;
+            
+            // Perhitungan Nilai CBR
+            const cbr = manfaat / totalCost;
+
+            // Simpan secara realtime di LocalStorage browser agar terbaca di index.html
+            localStorage.setItem('cbr_mrt', cbr);
+
+            // Tampilkan Output Ke Mahasiswa
+            document.getElementById('res-cost').innerText = "Rp " + totalCost.toLocaleString('id-ID');
+            document.getElementById('res-pct').innerText = rasioBiayaLangsung.toFixed(1) + "%";
+            document.getElementById('res-cbr').innerText = cbr.toFixed(4);
+            document.getElementById('hasil-box').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
