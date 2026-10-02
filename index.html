@@ -1,3 +1,101 @@
-├── index.html          <-- Halaman Utama & Dashboard Lelang (Papan Utama Dosen)
-├── mrt-workspace.html  <-- Lembar Kerja & Simulator Input Khusus Tim MRT
-└── brt-workspace.html  <-- Lembar Kerja & Simulator Input Khusus Tim BRT
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Lelang Transportasi Megapolitan</title>
+    <script src="https://tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans p-6">
+    <div class="max-w-6xl mx-auto">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold text-amber-400 mb-2">🏙️ DASHBOARD LELANG PROYEK MEGAPOLITAN</h1>
+            <p class="text-gray-400 text-lg">Penentuan Pemenang Proyek Transportasi Massal Berdasarkan Cost-Benefit Ratio (CBR)</p>
+        </header>
+
+        <!-- Papan Skor Utama -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <!-- Kartu Skor MRT -->
+            <div class="bg-gray-800 p-6 rounded-xl border-2 border-blue-500 shadow-xl">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-blue-400">🚄 KONSULTAN TIM MRT</h2>
+                    <span class="px-3 py-1 bg-blue-900 text-blue-300 rounded-full text-xs font-semibold">Rail-Based</span>
+                </div>
+                <div class="space-y-3">
+                    <p class="text-gray-400">Target Kapasitas: <span class="text-white font-bold">50.000 pphpd</span></p>
+                    <div class="bg-gray-700 p-4 rounded-lg text-center">
+                        <p class="text-sm text-gray-400">Skor Akhir CBR</p>
+                        <p id="cbr-mrt-display" class="text-4xl font-black text-white mt-1">-</p>
+                    </div>
+                    <a href="mrt-workspace.html" target="_blank" class="block text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition">
+                        Buka Lembar Kerja MRT ↗
+                    </a>
+                </div>
+            </div>
+
+            <!-- Kartu Skor BRT -->
+            <div class="bg-gray-800 p-6 rounded-xl border-2 border-emerald-500 shadow-xl">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-emerald-400">🚌 KONSULTAN TIM BRT</h2>
+                    <span class="px-3 py-1 bg-emerald-900 text-emerald-300 rounded-full text-xs font-semibold">Road-Based</span>
+                </div>
+                <div class="space-y-3">
+                    <p class="text-gray-400">Target Kapasitas: <span class="text-white font-bold">50.000 pphpd (Hybrid/ART)</span></p>
+                    <div class="bg-gray-700 p-4 rounded-lg text-center">
+                        <p class="text-sm text-gray-400">Skor Akhir CBR</p>
+                        <p id="cbr-brt-display" class="text-4xl font-black text-white mt-1">-</p>
+                    </div>
+                    <a href="brt-workspace.html" target="_blank" class="block text-center bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-4 rounded-lg transition">
+                        Buka Lembar Kerja BRT ↗
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tombol Bandingkan & Ketok Palu -->
+        <div class="text-center bg-gray-800 p-6 rounded-xl border border-gray-700">
+            <button onclick="hitungPemenang()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold text-xl py-3 px-8 rounded-xl shadow-lg transition transform hover:scale-105">
+                ⚖️ Kalkulasi & Ambil Keputusan Lelang
+            </button>
+            <div id="hasil-lelang" class="mt-6 text-2xl font-bold text-amber-300 hidden"></div>
+        </div>
+    </div>
+
+    <script>
+        function hitungPemenang() {
+            // Mengambil data terupdate yang disimpan mahasiswa di LocalStorage
+            const cbrMrt = parseFloat(localStorage.getItem('cbr_mrt')) || 0;
+            const cbrBrt = parseFloat(localStorage.getItem('cbr_brt')) || 0;
+
+            document.getElementById('cbr-mrt-display').innerText = cbrMrt ? cbrMrt.toFixed(2) : '-';
+            document.getElementById('cbr-brt-display').innerText = cbrBrt ? cbrBrt.toFixed(2) : '-';
+
+            const hasilDiv = document.getElementById('hasil-lelang');
+            hasilDiv.classList.remove('hidden');
+
+            if (cbrMrt === 0 && cbrBrt === 0) {
+                hasilDiv.innerHTML = "❌ Kedua tim belum melakukan submit kalkulasi di lembar kerja masing-masing.";
+                return;
+            }
+
+            let pemenang = "";
+            if (cbrMrt > cbrBrt) {
+                pemenang = "🏆 PEMENANG LELANG: TIM MRT (Rail-Based)! Proyek bernilai investasi tinggi ini dinilai memberikan efisiensi manfaat jangka panjang yang lebih optimal.";
+            } else if (cbrBrt > cbrMrt) {
+                pemenang = "🏆 PEMENANG LELANG: TIM BRT (Road-Based)! Dengan efisiensi biaya konstruksi, rasio kembalian manfaat proyek ini jauh lebih tinggi.";
+            } else {
+                pemenang = "🤝 HASIL SEIMBANG! Kedua tim memiliki rasio biaya dan manfaat yang sama kuat. Keputusan diserahkan ke hak prerogatif Walikota.";
+            }
+            hasilDiv.innerHTML = pemenang;
+        }
+        
+        // Cek data saat halaman dimuat
+        window.onload = function() {
+            const cbrMrt = parseFloat(localStorage.getItem('cbr_mrt')) || 0;
+            const cbrBrt = parseFloat(localStorage.getItem('cbr_brt')) || 0;
+            if(cbrMrt) document.getElementById('cbr-mrt-display').innerText = cbrMrt.toFixed(2);
+            if(cbrBrt) document.getElementById('cbr-brt-display').innerText = cbrBrt.toFixed(2);
+        }
+    </script>
+</body>
+</html>
